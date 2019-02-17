@@ -1,4 +1,4 @@
-var webpack = require("webpack"),
+const webpack = require("webpack"),
     path = require("path"),
     fileSystem = require("fs"),
     env = require("./utils/env"),
@@ -8,17 +8,17 @@ var webpack = require("webpack"),
     WriteFilePlugin = require("write-file-webpack-plugin");
 
 // load the secrets
-var alias = {};
+const alias = {};
 
-var secretsPath = path.join(__dirname, ("secrets." + env.NODE_ENV + ".js"));
+const secretsPath = path.join(__dirname, ("secrets." + env.NODE_ENV + ".js"));
 
-var fileExtensions = ["jpg", "jpeg", "png", "gif", "eot", "otf", "svg", "ttf", "woff", "woff2"];
+const fileExtensions = ["jpg", "jpeg", "png", "gif", "eot", "otf", "svg", "ttf", "woff", "woff2"];
 
 if (fileSystem.existsSync(secretsPath)) {
   alias["secrets"] = secretsPath;
 }
 
-var options = {
+const options = {
   mode: process.env.NODE_ENV || "development",
   entry: {
     popup: path.join(__dirname, "src", "js", "popup.js"),
@@ -45,7 +45,12 @@ var options = {
         test: /\.html$/,
         loader: "html-loader",
         exclude: /node_modules/
-      }
+      },
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        exclude: /node_modules/,
+      },
     ]
   },
   resolve: {
